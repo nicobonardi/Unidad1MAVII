@@ -66,7 +66,7 @@ void Game::DrawGame()
 
     // Dibujar el cuerpo de control (círculo)
     sf::CircleShape controlShape(5);
-    controlShape.setFillColor(sf::Color::Blue);
+    controlShape.setFillColor(sf::Color::Green);
     controlShape.setPosition(controlBody->GetPosition().x - 5, controlBody->GetPosition().y - 5);
     wnd->draw(controlShape);
 }
