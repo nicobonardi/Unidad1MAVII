@@ -12,13 +12,13 @@ using namespace sf;
 class SFMLRenderer : public b2Draw//b2DebugDraw
 {
 private:
-	RenderWindow *wnd;
+	RenderWindow* wnd;
 
 public:
-	SFMLRenderer(RenderWindow *window);
+	SFMLRenderer(RenderWindow* window);
 	~SFMLRenderer(void);
 
-	inline Color box2d2SFMLColor(const b2Color &_color);
+	inline Color box2d2SFMLColor(const b2Color& _color);
 	void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
 	void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
 	void DrawCircle(const b2Vec2& center, float radius, const b2Color& color) override;

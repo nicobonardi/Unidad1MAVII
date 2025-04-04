@@ -8,7 +8,8 @@ SFMLRenderer::SFMLRenderer(RenderWindow* window)
 
 // Destructor de la clase SFMLRenderer
 SFMLRenderer::~SFMLRenderer(void)
-{ }
+{
+}
 
 // Dibuja un polígono sin relleno
 void SFMLRenderer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)

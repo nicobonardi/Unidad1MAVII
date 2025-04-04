@@ -46,6 +46,12 @@ void Game::DrawGame()
     groundShape.setPosition(0, 95);
     wnd->draw(groundShape);
 
+    //Dibujar el techo
+    sf::RectangleShape upWallShape(sf::Vector2f(500, 5));
+    upWallShape.setFillColor(sf::Color::Red);
+    upWallShape.setPosition(0, 0);
+    wnd->draw(upWallShape);
+
     // Dibujar las paredes
     sf::RectangleShape leftWallShape(sf::Vector2f(10, alto)); // Alto de la ventana
     leftWallShape.setFillColor(sf::Color::Blue);
@@ -59,10 +65,27 @@ void Game::DrawGame()
 
     // Dibujar el cuerpo de control (círculo)
     sf::CircleShape controlShape(5);
-    controlShape.setFillColor(sf::Color::Magenta);
+    controlShape.setFillColor(sf::Color::Green);
     controlShape.setPosition(controlBody->GetPosition().x - 5, controlBody->GetPosition().y - 5);
     wnd->draw(controlShape);
+
+    //dibujamos los obstaculos
+    sf::RectangleShape ObstacleShape1(sf::Vector2f(10, 10));
+    ObstacleShape1.setFillColor(sf::Color::Magenta);
+    ObstacleShape1.setPosition(15, 55);
+    wnd->draw(ObstacleShape1);
+
+    sf::RectangleShape ObstacleShape2(sf::Vector2f(10, 10));
+    ObstacleShape2.setFillColor(sf::Color::Magenta);
+    ObstacleShape2.setPosition(45, 65);
+    wnd->draw(ObstacleShape2);
+
+    sf::RectangleShape ObstacleShape3(sf::Vector2f(10, 10));
+    ObstacleShape3.setFillColor(sf::Color::Magenta);
+    ObstacleShape3.setPosition(70, 30);
+    wnd->draw(ObstacleShape3);
 }
+
 
 // Procesamiento de eventos de entrada
 void Game::DoEvents()
@@ -75,28 +98,8 @@ void Game::DoEvents()
         case Event::Closed:
             wnd->close(); // Cerrar la ventana si se presiona el botón de cerrar
             break;
-        case Event::MouseButtonPressed:
-            // Crear un cuerpo dinámico triangular en la posición del ratón
-            b2Body* body = Box2DHelper::CreateTriangularDynamicBody(phyWorld, b2Vec2(0.0f, 0.0f), 10.0f, 1.0f, 4.0f, 0.1f);
-            // Transformar las coordenadas según la vista activa
-            Vector2f pos = wnd->mapPixelToCoords(Vector2i(evt.mouseButton.x, evt.mouseButton.y));
-            body->SetTransform(b2Vec2(pos.x, pos.y), 0.0f);
-            break;
         }
     }
-
-    // Controlar el movimiento del cuerpo de control con el teclado
-    // Segun la numeracion usada, cuando mas cerca de cero mas 
-    // lento es el desplazamiento sobre ese eje
-    controlBody->SetAwake(true);
-    if (Keyboard::isKeyPressed(Keyboard::Left))
-        controlBody->SetLinearVelocity(b2Vec2(-30.0f, 0.0f));
-    if (Keyboard::isKeyPressed(Keyboard::Right))
-        controlBody->SetLinearVelocity(b2Vec2(30.0f, 0.0f));
-    if (Keyboard::isKeyPressed(Keyboard::Down))
-        controlBody->SetLinearVelocity(b2Vec2(0.0f, 30.0f));
-    if (Keyboard::isKeyPressed(Keyboard::Up))
-        controlBody->SetLinearVelocity(b2Vec2(0.0f, -30.0f));
 }
 
 // Comprobación de colisiones (a implementar más adelante)
@@ -129,19 +132,38 @@ void Game::InitPhysics()
     // Crear el suelo y las paredes estáticas del mundo físico
     b2Body* groundBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 100, 10);
     groundBody->SetTransform(b2Vec2(50.0f, 100.0f), 0.0f);
+    groundBody->GetFixtureList()->SetFriction(0.1f);  //menos fricción, más rebote
+
+    b2Body* upWallBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 100, 10);
+    upWallBody->SetTransform(b2Vec2(250.0f, 50.0f), 0.0f);
 
     b2Body* leftWallBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 100);
     leftWallBody->SetTransform(b2Vec2(0.0f, 50.0f), 0.0f);
+    leftWallBody->GetFixtureList()->SetFriction(0.1f);
 
     b2Body* rightWallBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 100);
     rightWallBody->SetTransform(b2Vec2(100.0f, 50.0f), 0.0f);
+    rightWallBody->GetFixtureList()->SetFriction(0.1f);
 
-    // Crear un círculo que se controlará con el teclado
-    controlBody = Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 1.0f, 0.5, 0.1f);
-    controlBody->SetTransform(b2Vec2(50.0f, 50.0f), 0.0f);
+    // Crear el circulo 
+    controlBody = Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 1.0f, 0.5, 1.0f);
+    controlBody->SetTransform(b2Vec2(10.0f, 50.0f), 0.0f);
+    controlBody->SetLinearVelocity(b2Vec2(10.0f, -10.0f)); //movimiento inicial en diagonal
+
+    b2Body* ObstacleBody1 = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 10);
+    ObstacleBody1->SetTransform(b2Vec2(20.0f, 60.0f), 0.0f);
+    ObstacleBody1->GetFixtureList()->SetFriction(0.1f);
+
+    b2Body* ObstacleBody2 = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 10);
+    ObstacleBody2->SetTransform(b2Vec2(50.0f, 70.0f), 0.0f);
+    ObstacleBody2->GetFixtureList()->SetFriction(0.1f);
+
+    b2Body* ObstacleBody3 = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 10);
+    ObstacleBody3->SetTransform(b2Vec2(75.0f, 35.0f), 0.0f);
+    ObstacleBody3->GetFixtureList()->SetFriction(0.1f);
 }
-
 // Destructor de la clase
 
 Game::~Game(void)
-{ }
+{
+}

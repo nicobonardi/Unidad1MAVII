@@ -11,12 +11,12 @@ private:
 	// Propiedades de la ventana
 	int alto;
 	int ancho;
-	RenderWindow *wnd;
+	RenderWindow* wnd;
 	Color clearColor;
 
 	// Objetos de box2d
-	b2World *phyWorld;
-	SFMLRenderer *debugRender;
+	b2World* phyWorld;
+	SFMLRenderer* debugRender;
 
 	//tiempo de frame
 	float frameTime;
@@ -28,9 +28,8 @@ private:
 public:
 
 	// Constructores, destructores e inicializadores
-	Game(int ancho, int alto,std::string titulo);
+	Game(int ancho, int alto, std::string titulo);
 	void CheckCollitions();
-	void CreateEnemy(int x, int y);
 	~Game(void);
 	void InitPhysics();
 
@@ -41,4 +40,3 @@ public:
 	void DoEvents();
 	void SetZoom();
 };
-
