@@ -57,8 +57,9 @@ void Game::DrawGame()
     rightWallShape.setPosition(90, 0); // X = 90 para que comience donde termina el suelo
     wnd->draw(rightWallShape);
 
+//Dibujar el rectángulo
     sf::RectangleShape controlShape(sf::Vector2f(10, 10));
-    controlShape.setFillColor(sf::Color::Magenta);
+    controlShape.setFillColor(sf::Color::Green);
     controlShape.setPosition(controlBody->GetPosition().x - 5, controlBody->GetPosition().y - 5);
     wnd->draw(controlShape);
 }
@@ -77,17 +78,17 @@ void Game::DoEvents()
         }
     }
 
-    // Controlar el movimiento del cuerpo de control con el teclado
-    // Segun la numeracion usada, cuando mas cerca de cero mas 
-    // lento es el desplazamiento sobre ese eje
+    /* Controlar el movimiento del cuerpo de control con el teclado
+    Segun la numeracion usada, cuando mas cerca de cero mas 
+    lento es el desplazamiento sobre ese eje */
     controlBody->SetAwake(true);
     if (Keyboard::isKeyPressed(Keyboard::Left))
-        controlBody->SetLinearVelocity(b2Vec2(-30.0f, 0.0f));
+        controlBody->SetLinearVelocity(b2Vec2(-50.0f, 0.0f));
     if (Keyboard::isKeyPressed(Keyboard::Right))
-        controlBody->SetLinearVelocity(b2Vec2(30.0f, 0.0f));
+        controlBody->SetLinearVelocity(b2Vec2(50.0f, 0.0f));
 }
 
-// Comprobación de colisiones (a implementar más adelante)
+// Comprobación de colisiones
 void Game::CheckCollitions()
 {
     // Implementación de la comprobación de colisiones
